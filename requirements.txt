@@ -1,0 +1,35 @@
+streamlit
+pandas
+numpy
+pypdf
+tqdm
+dataclasses
+python-docx
+torch
+transformers
+sentencepiece
+accelerate
+bitsandbytes
+fastapi
+uvicorn
+# LLaMa index安装
+llama-index==0.10.14
+llama-index-readers-file
+llama-index-embeddings-huggingface
+llama-index-llms-huggingface
+llama-index-vector-stores-faiss
+llama-index-llms-openai
+docx2txt
+faiss-cpu==1.7.4
+langchain==0.0.312
+openai==0.27.4
+llama-cpp-python
+loguru
+sentence_transformers
+sse_starlette
+fitz
+frontend
+tools
+docx
+# openapi-schema-pydantic==1.2.4
+# pdfplumber
