@@ -1,20 +1,7 @@
 import streamlit as st
-# from RAG import KnowLedge
-from rag_faiss_llama_index import RAGStringQueryEngine
-
 
 session_stats = st.session_state
 
-
-# @st.cache_resource
-# def create_model():
-#     # kl = KnowLedge(gen_model_name_or_path="models/chatglm3-6b-32k",
-#     #                sen_embedding_model_name_or_path="models/chinese-roberta-wwm-ext")
-#     rag = RAGStringQueryEngine()
-#     return rag
-
-# kl = create_model()
-# kl = st.session_state.kl
 
 st.set_page_config(
     page_title="你好",
@@ -22,8 +9,6 @@ st.set_page_config(
 )
 
 st.write("# 欢迎! 👋")
-
-# st.sidebar.success("在上方选择一个演示。")
 
 st.markdown(
     """
@@ -33,5 +18,3 @@ st.markdown(
     2. folder_QA, 读取一个文件夹内的所有文件，进行搜索问答。
 """
 )
-
-# st.session_state.rag = create_model()
