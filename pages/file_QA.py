@@ -38,7 +38,11 @@ if True:
     upload_file = None
     if new_upload_file:
         # 指定保存文件的目录（例如 tempDir）
-        file_path = os.path.join(save_directory, new_upload_file.name)
+        file_save_path = save_directory + "/" + new_upload_file.name.split(".")[0]
+        if not os.path.exists(file_save_path):
+            os.mkdir(file_save_path)
+        file_path = os.path.join(file_save_path, new_upload_file.name)
+        # file_path = os.path.join(save_directory, new_upload_file.name)
         save_uploaded_file(new_upload_file, save_directory, file_path)
 
 
@@ -52,7 +56,8 @@ with hcol1:
                 with st.expander(label="生成结果", expanded=True):
                     with st.empty():
                         url = "http://0.0.0.0:11073/api/v2/file_query"
-                        data = {'file_path': save_directory, 'input_str': input_str}
+                        # data = {'file_path': save_directory, 'input_str': input_str}
+                        data = {'file_path': file_save_path, 'input_str': input_str}
                         print("data:", data)
                         response = requests.post(url, json=data, headers=headers)
                         resp = response.json()["resp"]
@@ -60,13 +65,30 @@ with hcol1:
                         st.markdown(resp)
         else:
             st.markdown("请选择文件")
+            
+    if st.button("全文摘要"):
+        if new_upload_file is not None:
+            if input_str is None or len(input_str) >0:
+                input_str = "总结全文，形成摘要"
+            with st.expander(label="生成结果", expanded=True):
+                with st.empty():
+                    url = "http://0.0.0.0:11073/api/v2/file_summary"
+                    data = {'file_path': save_directory, 'input_str': input_str}
+                    print("data:", data)
+                    response = requests.post(url, json=data, headers=headers)
+                    resp = response.json()["resp"]
+                    print(resp)
+                    st.markdown(resp)
+        else:
+            st.markdown("请选择文件") 
 
 with hcol2:
     st.header("参考依据")
     if new_upload_file:
         file_name = new_upload_file.name
         if file_name[-4:] == "docx":
-            doc = docx.Document(new_upload_file)
+            # doc = docx.Document(new_upload_file)
+            doc = docx.Document(file_path)
             for para in doc.paragraphs:
                 st.write(para.text)
         elif file_name[-3:] == "pdf":
@@ -75,13 +97,13 @@ with hcol2:
             # 展示 PDF 页面
             for page_num in range(len(pdf_document)):
                 page = pdf_document[page_num]
-                st.image(page.get_pixmap(), caption=f"Page {page_num + 1}", use_column_width=True)
+                pix = page.get_pixmap()
+                sd = "./tempDir/pdf_" + str(page_num) + ".png"
+                pix.save(sd)
+                st.image(sd, caption=f"Page {page_num + 1}", use_column_width=True)
         else:
             file_type = "txt"
             
-        
-            
-        
     
     # if st.session_state.get('output_df') is not None:
     #     st.dataframe(st.session_state.get('output_df'))  
